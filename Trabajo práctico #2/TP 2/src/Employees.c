@@ -20,6 +20,7 @@ static int arrayIsEmpty (Employee* pArray, int len);
 static int sortEmployees(Employee* list, int len, int order);
 static int calculateAverageSalary(Employee* pArray, int len, float* averageSalary, float* totalSalary);
 static int salaryAboveAverage (Employee* pArray, int len, float averageSalary, int* counterAboveAverage);
+static int printArrayEmployees(Employee* pArray, int len);
 
 /** \brief To indicate that all position in the array are empty,
  * 		   and all the employees ID's are 0,
@@ -123,18 +124,18 @@ static int findEmptyIndex(Employee* aEmployees, int len, int* emptyIndex)
 	}
 	return retorno;
 }
-int printArrayEmployees(Employee* pArray, int len)
+static int printArrayEmployees(Employee* pArray, int len)
 {
 	int retorno = -1;
 	int i;
 	if(pArray!=NULL && len>=0 && arrayIsEmpty(pArray, len)==0)
 	{
-		printf("Estos son los empleados activos actualmente: \n");
+		printf("\nEstos son los empleados activos actualmente: \n");
 		for(i=0;i<len;i++)
 		{
 			if(pArray[i].isEmpty == 0)
 			{
-				printf("Nombre: %s\nApellido: %s\nId: %d\nSueldo: %.2f\nSector: %d\n---------------------------------------\n",pArray[i].name, pArray[i].lastName, pArray[i].id, pArray[i].salary, pArray[i].sector);
+				printf("\n-----------------------------------------------------------------------------------------------------------\nApellido: %-20s| Nombre: %-20s| Id: %-5d| Sueldo: %-10.2f| Sector: %-5d|\n-----------------------------------------------------------------------------------------------------------",pArray[i].lastName, pArray[i].name, pArray[i].id, pArray[i].salary, pArray[i].sector);
 				retorno = 0;
 			}
 		}
@@ -171,38 +172,38 @@ int modifyEmployee (Employee* aEmployee, int len)
 	int bufferIndex;
 	int chosenOption;
 
-	if( aEmployee!=NULL && len>0 && printArrayEmployees(aEmployee, len)==0 && utn_getNumber("Por favor ingrese el Id del registro que desea modificar\n",&auxId,RETRIES,INT_MAX,1)==0 &&
+	if( aEmployee!=NULL && len>0 && printArrayEmployees(aEmployee, len)==0 && utn_getNumber("\n\nPor favor ingrese el Id del registro que desea modificar:\n",&auxId,RETRIES,INT_MAX,1)==0 &&
 		arrayIsEmpty(aEmployee, len)==0)
 	{
 		bufferIndex = findEmployeeById(aEmployee, len, auxId);
 		if(bufferIndex>=0)
 		{
 			printIndex(aEmployee, bufferIndex);
-			printf("Empleado encontrado con exito\n");
+			printf("\n\n[Empleado encontrado con exito]\n\n");
 			do
 			{
-				if( utn_getNumber("Que campo del registro desea modificar?\n[1]Nombre\n[2]Apellido\n[3]Salario\n[4]Sector\n[5]Volver al menu\n", &chosenOption, RETRIES, 5, 1)==0)
+				if( utn_getNumber("¿Que campo del registro desea modificar?\n[1] Nombre\n[2] Apellido\n[3] Salario\n[4] Sector\n[5] Volver al menu\n", &chosenOption, RETRIES, 5, 1)==0)
 				{
 					switch(chosenOption)
 					{
 						case 1:
 						{
-								if(utn_getName("Por favor, ingrese el nombre del empleado\n", "ERROR. Ingrese un nombre valido\n", aEmployee[bufferIndex].name, RETRIES, NAME_LEN)==0)
+								if(utn_getName("Por favor, ingrese el nombre del empleado:\n", "ERROR. Ingrese un nombre valido\n", aEmployee[bufferIndex].name, RETRIES, NAME_LEN)==0)
 								{
-									printf("Nombre ingresado con exito!\nNombre: %s\n", aEmployee[bufferIndex].name);
+									printf("¡Nombre ingresado con exito!\nNombre: %s\n", aEmployee[bufferIndex].name);
 									result = 0;
 								}
 								else
 								{
-									printf("ERROR. Intentelo nuevamente\n");
+									printf("-ERROR. Intentelo nuevamente-\n");
 								}
 								break;
 						}
 						case 2:
 						{
-								if(utn_getName("Por favor, ingrese el apellido del empleado\n", "ERROR. Ingrese un apellido valido\n", aEmployee[bufferIndex].lastName, RETRIES, NAME_LEN)==0)
+								if(utn_getName("Por favor, ingrese el apellido del empleado:\n", "ERROR. Ingrese un apellido valido\n", aEmployee[bufferIndex].lastName, RETRIES, NAME_LEN)==0)
 								{
-									printf("Apellido ingresado con exito!\nApellido: %s\n", aEmployee[bufferIndex].lastName);
+									printf("¡Apellido ingresado con exito!\nApellido: %s\n", aEmployee[bufferIndex].lastName);
 									result = 0;
 								}
 								else
@@ -213,27 +214,27 @@ int modifyEmployee (Employee* aEmployee, int len)
 						}
 						case 3:
 						{
-								if(utn_getNumberFloat("Por favor ingrese el sueldo del empleado\n", &aEmployee[bufferIndex].salary, RETRIES, LONG_MAX, 1)==0)
+								if(utn_getNumberFloat("Por favor ingrese el sueldo del empleado:\n", &aEmployee[bufferIndex].salary, RETRIES, LONG_MAX, 1)==0)
 								{
-									printf("Sueldo ingresado con exito!\nSueldo: %f\n", aEmployee[bufferIndex].salary);
+									printf("¡Sueldo ingresado con exito!\nSueldo: %.2f\n", aEmployee[bufferIndex].salary);
 									result = 0;
 								}
 								else
 								{
-									printf("ERROR. Intentelo nuevamente\n");
+									printf("-ERROR. Intentelo nuevamente-\n");
 								}
 								break;
 						}
 						case 4:
 						{
-								if(utn_getNumber("Por favor ingrese el sector del empleado\n", &aEmployee[bufferIndex].sector, RETRIES, INT_MAX, 1)==0)
+								if(utn_getNumber("Por favor ingrese el sector del empleado:\n", &aEmployee[bufferIndex].sector, RETRIES, INT_MAX, 1)==0)
 								{
-									printf("Sector ingresado con exito!\nSector: %d\n", aEmployee[bufferIndex].sector);
+									printf("¡Sector ingresado con exito!\nSector: %d\n", aEmployee[bufferIndex].sector);
 									result = 0;
 								}
 								else
 								{
-									printf("ERROR. Intentelo nuevamente\n");
+									printf("-ERROR. Intentelo nuevamente-\n");
 								}
 								break;
 						}
@@ -244,12 +245,12 @@ int modifyEmployee (Employee* aEmployee, int len)
 		}
 		else
 		{
-			printf("No se pudo encontrar el Id\n");
+			printf("-No se pudo encontrar el Id-\n");
 		}
 	}
 	else
 	{
-		printf("Debe cargar un empleado primero\n");
+		printf("\n ERROR\n-Debe cargar un empleado primero-\n\n");
 	}
 	return result;
 }
@@ -260,7 +261,7 @@ static int printIndex(Employee* pArray, int index)
 	{
 			if(pArray[index].isEmpty == 0)
 			{
-				printf("\nNombre: %s\nApellido: %s\nSueldo: %f\nSector: %d\nId: %d\n",pArray[index].name, pArray[index].lastName,pArray[index].salary,pArray[index].sector,pArray[index].id);
+				printf("\n-----------------------------------------------------------------------------------------------------------\nApellido: %-20s| Nombre: %-20s| Id: %-5d| Sueldo: %-10.2f| Sector: %-5d|\n-----------------------------------------------------------------------------------------------------------",pArray[index].lastName, pArray[index].name, pArray[index].id, pArray[index].salary, pArray[index].sector);
 				retorno=0;
 			}
 	}
@@ -288,17 +289,17 @@ int unsuscribeEmployee(Employee* pArray, int len)
 	if(pArray!=NULL && len>0)
 	{
 		if( printArrayEmployees(pArray, len) == 0 &&
-			utn_getNumber("Ingrese el id del empleado que desea dar de baja\n", &bufferId, RETRIES, INT_MAX, 1)==0)
+			utn_getNumber("\n\nIngrese el id del empleado que desea dar de baja:\n", &bufferId, RETRIES, INT_MAX, 1)==0)
 		{
 			if(removeEmployee(pArray, len, bufferId)==0)
 			{
-				printf("Empleado encontrado\n");
+				printf("-Empleado encontrado-\n");
 				result = 0;
 			}
 		}
 		else
 		{
-			printf("Opcion incorrecta.\n");
+			printf("\n-Opcion incorrecta-\n");
 		}
 	}
 	return result;
@@ -322,7 +323,7 @@ static int arrayIsEmpty (Employee* pArray, int len)
 }
 static int sortEmployees(Employee* pArray, int len, int order)
 {
-	int retorno = -1;
+	int result = -1;
 	int index;
 	int flagSort = 0;
 	Employee bufferEmployee;
@@ -346,8 +347,9 @@ static int sortEmployees(Employee* pArray, int len, int order)
 				}
 			}
 		}
+		result = 0;
 	}
-	return retorno;
+	return result;
 }
 static int calculateAverageSalary(Employee* pArray, int len, float* averageSalary, float* totalSalary)
 {
@@ -375,12 +377,12 @@ static int salaryAboveAverage (Employee* pArray, int len, float averageSalary, i
 {
 	int result = -1;
 	int i;
-	int bufferCounter;
+	int bufferCounter=0;
 	if(pArray!=NULL && len > 0 && counterAboveAverage!=NULL)
 	{
 		for(i=0;i<len;i++)
 		{
-			if(pArray[i].salary > averageSalary && pArray[i].isEmpty == 1)
+			if(pArray[i].salary > averageSalary && pArray[i].isEmpty == 0)
 			{
 				bufferCounter++;
 			}
@@ -399,13 +401,13 @@ int employeeReport(Employee* pArray, int len)
 	float totalSalary;
 	int employeesAboveAverage;
 	if( pArray!=NULL && len>0 && arrayIsEmpty(pArray, len)==0 &&
-		utn_getNumber("Ingrese la opcion que desea:\n[1] Mostrar el listado de empleados ordenado alfabeticamente\n[2] Mostrar informacion sobre salarios\n[3] Volver al menu\n", &op, RETRIES, 2, 1)==0)
+		utn_getNumber("\nIngrese la opcion que desea:\n\n[1] Mostrar el listado de empleados ordenado alfabeticamente por apellido\n[2] Mostrar informacion sobre los salarios\n[3] Volver al menu\n", &op, RETRIES, 2, 1)==0)
 	{
 		switch(op)
 		{
 			case 1:
 			{
-				if(utn_getNumber("De que manera desea ordenar los empleados?\n[1] Ascendente (A-Z)\n[2] Descendente (Z-A)\n" ,&bufferOrder, RETRIES,2,1)==0)
+				if(utn_getNumber("\n¿De que manera desea ordenar los empleados?\n\n[1] Ascendente (A-Z)\n[0] Descendente (Z-A)\n" ,&bufferOrder, RETRIES,1,0)==0)
 				{
 					if(sortEmployees(pArray, len, bufferOrder)==0)
 					{
@@ -421,12 +423,19 @@ int employeeReport(Employee* pArray, int len)
 			}
 			case 2:
 			{
-				if( calculateAverageSalary(pArray, len, &averageSalary, &totalSalary) &&
-					salaryAboveAverage(pArray, len, averageSalary, &employeesAboveAverage)== 0)
+				if( calculateAverageSalary(pArray, len, &averageSalary, &totalSalary)==0 &&
+					salaryAboveAverage(pArray, len, averageSalary, &employeesAboveAverage)==0)
 				{
 					printf("El sueldo total de todos los empleados es $%.2f\n", totalSalary);
 					printf("El sueldo promedio de los empleados es $%.2f\n", averageSalary);
-					printf("Del total de los empleados [%d] superan el sueldo promedio",employeesAboveAverage);
+					if(employeesAboveAverage>0)
+					{
+						printf("Del total de los empleados [%d] superan el sueldo promedio\n",employeesAboveAverage);
+					}
+					else
+					{
+						printf("No hay ningun empleado que supere el sueldo promedio\n");
+					}
 					result = 0;
 				}
 				break;

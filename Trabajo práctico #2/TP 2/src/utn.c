@@ -175,11 +175,11 @@ int utn_getMenu(int *number, int retries, int max, int min)
 		do
 		{
 			printf( "Bienvenido. Elija una opcion:\n" //MENU INICIO
-					"1-Dar de alta de empleado\n"
-					"2-Modificar el registro de un empleado\n"
-					"3-Dar de baja un empleado\n"
-					"4-Imprimir todos los registros\n"
-					"5-Salir");
+					"1- Dar de alta de empleado\n"
+					"2- Modificar el registro de un empleado\n"
+					"3- Dar de baja un empleado\n"
+					"4- Imprimir todos los registros\n"
+					"5- Salir");
 			if (utn_myGets(textNumber, ARRAY_SIZE) == 0 && utn_verifyNumArray(textNumber) == 1)
 			{
 				*number = atoi(textNumber);

@@ -33,7 +33,7 @@ int main(void) {
 				 				if( addEmployees(arrayEmployees, QTY_EMPLOYEES, bufferEmployee.id, bufferEmployee.name,
 				 					bufferEmployee.lastName, bufferEmployee.salary, bufferEmployee.sector)==0)
 				 				{
-				 					printf("El empleado fue ingresado de manera exitosa\n\n\n");
+				 					printf("[El empleado fue ingresado de manera exitosa]\n\n\n");
 				 				}
 				 			}
 				 			break;
@@ -42,29 +42,36 @@ int main(void) {
 				 	{
 				 			if(modifyEmployee(arrayEmployees, QTY_EMPLOYEES)==0)
 							{
-								printf("El empleado fue modificado de manera exitosa\n\n\n");
+								printf("[El empleado fue modificado de manera exitosa]\n\n\n");
 							}
-				 			else
-				 			{
-				 				printf("ERROR. Intentelo nuevamente\n");
-				 			}
 				 			break;
 				 	}
 				 	case 3:
 				 	{
 				 			if(unsuscribeEmployee(arrayEmployees, QTY_EMPLOYEES)==0)
 				 			{
-				 				printf("El empleado fue dado de baja de manera exitosa\n\n\n");
+				 				printf("[El empleado fue dado de baja de manera exitosa]\n\n\n");
 				 			}
 				 			else
 				 			{
-				 				printf("ERROR. Intentelo nuevamente.\n");
+				 				printf("Intentelo nuevamente.\n\n");
 				 			}
+				 			break;
 				 	}
+				 	case 4:
+				 			if(employeeReport(arrayEmployees, QTY_EMPLOYEES)==0)
+				 			{
+				 				printf("\n\nFIN DEL REPORTE\n\n\n");
+				 			}
+				 			else
+				 			{
+				 				printf("\n ERROR\n-No se pudo realizar el reporte-\n\n");
+				 			}
 				}
 			}
 
 		}while(chosenOption!=5);
 	}
+	printf("Goodbye!");
 	return EXIT_SUCCESS;
 }

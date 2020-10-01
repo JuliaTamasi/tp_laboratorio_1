@@ -23,7 +23,7 @@ typedef struct
 int initEmployees(Employee* pArrayEmployees, int len);
 int getEmployeeData(Employee* aEmployees);
 int addEmployees(Employee* aEmployees, int len, int id, char name[], char lastName[], float salary, int sector);
-int printArrayEmployees(Employee* pArray, int len);
 int modifyEmployee (Employee* aEmployee, int len);
 int unsuscribeEmployee(Employee* pArray, int len);
+int employeeReport(Employee* pArray, int len);
 #endif /* EMPLOYEES_H_ */
