@@ -12,12 +12,10 @@
 #include <stdlib.h>
 #include "utn.h"
 #include "Employees.h"
-#define QTY_EMPLOYEES 999
 
 int main(void) {
 	setbuf(stdout,NULL);
 	int chosenOption;
-	int employeeCount=0;
 	Employee arrayEmployees [QTY_EMPLOYEES];
 	if(initEmployees(arrayEmployees, QTY_EMPLOYEES)==0)
 	{
@@ -35,10 +33,33 @@ int main(void) {
 				 				if( addEmployees(arrayEmployees, QTY_EMPLOYEES, bufferEmployee.id, bufferEmployee.name,
 				 					bufferEmployee.lastName, bufferEmployee.salary, bufferEmployee.sector)==0)
 				 				{
-				 					employeeCount++;
+				 					printf("El empleado fue ingresado de manera exitosa\n\n\n");
 				 				}
 				 			}
 				 			break;
+				 	}
+				 	case 2:
+				 	{
+				 			if(modifyEmployee(arrayEmployees, QTY_EMPLOYEES)==0)
+							{
+								printf("El empleado fue modificado de manera exitosa\n\n\n");
+							}
+				 			else
+				 			{
+				 				printf("ERROR. Intentelo nuevamente\n");
+				 			}
+				 			break;
+				 	}
+				 	case 3:
+				 	{
+				 			if(unsuscribeEmployee(arrayEmployees, QTY_EMPLOYEES)==0)
+				 			{
+				 				printf("El empleado fue dado de baja de manera exitosa\n\n\n");
+				 			}
+				 			else
+				 			{
+				 				printf("ERROR. Intentelo nuevamente.\n");
+				 			}
 				 	}
 				}
 			}

@@ -14,7 +14,7 @@ static int utn_myGets(char *array, int lenght) {
 	int retorno = -1;
 	if (array != NULL && lenght > 0 && fgets(array, lenght, stdin) == array) {
 		fflush(stdin);
-		if (array[strlen(array) - 1] == '\n') {
+		if (array[strlen(array) - 1] == '\n' &&array[0]!='\n') {
 			array[strlen(array) - 1] = '\0';
 		}
 		retorno = 0;
@@ -160,6 +160,7 @@ int utn_imprimirArray(int array[], int limite)
 /*
  * \brief Requests a number from the user that represents a menu option
  * \param number*, pointer to the memory space where the data obtained will be saved
+ * \param retries, opportunities to enter incorrect data
  * \param int min, Minimum allowed value
  * \param int max, Maximum allowed value
  * \return (-1) to indicate error/ (0) it's OK.
@@ -200,17 +201,34 @@ int utn_getMenu(int *number, int retries, int max, int min)
 int utn_getNumber(char *message, int *number, int attempts, int max, int min) {
 	int retorno = -1;
 	char bufferTextNumber[ARRAY_SIZE];
+	int bufferNumber;
 	if (message != NULL && number != NULL) {
 		do {
 			printf("%s\n", message);
 			if (utn_myGets(bufferTextNumber, ARRAY_SIZE) == 0
-					&& utn_verifyNumArray(bufferTextNumber) == 1 && max >= min) {
-				*number = atoi(bufferTextNumber);
-				retorno = 0;
-				break;
-			} else {
+					&& utn_verifyNumArray(bufferTextNumber) == 1 && max >= min)
+			{
+				bufferNumber = atoi(bufferTextNumber);
+				if(bufferNumber<=max && bufferNumber>=min)
+				{
+					*number = bufferNumber;
+					retorno = 0;
+					break;
+				}
+				else
+				{
+					attempts--;
+					if (attempts != 0)
+					{
+						printf("\nError, te quedan %d intentos \n", attempts);
+					}
+				}
+			}
+			else
+			{
 				attempts--;
-				if (attempts != 0) {
+				if (attempts != 0)
+				{
 					printf("\nError. Te quedan %d intentos\n", attempts);
 				}
 			}
@@ -227,17 +245,34 @@ int utn_getNumber(char *message, int *number, int attempts, int max, int min) {
 int utn_getNumberFloat(char *message, float *numberX, int attempts, int max, int min) {
 	int retorno = -1;
 	char bufferTextNumber[ARRAY_SIZE];
+	float bufferFloat;
 	if (message != NULL && numberX != NULL) {
 		do {
 			printf("%s\n", message);
 			if (utn_myGets(bufferTextNumber, ARRAY_SIZE) == 0
-					&& utn_verifyFloat(bufferTextNumber) == 1 && max >= min) {
-				*numberX = atof(bufferTextNumber);
-				retorno = 0;
-				break;
-			} else {
+					&& utn_verifyFloat(bufferTextNumber) == 1 && max >= min)
+			{
+				bufferFloat = atof(bufferTextNumber);
+				if(bufferFloat<=max && bufferFloat>=min)
+				{
+					*numberX = bufferFloat;
+					retorno = 0;
+					break;
+				}
+				else
+				{
+					attempts--;
+					if (attempts != 0)
+					{
+						printf("\nError, te quedan %d intentos \n", attempts);
+					}
+				}
+			}
+			else
+			{
 				attempts--;
-				if (attempts != 0) {
+				if (attempts != 0)
+				{
 					printf("\nError, te quedan %d intentos \n", attempts);
 				}
 			}
