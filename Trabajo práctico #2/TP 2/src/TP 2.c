@@ -1,7 +1,7 @@
 /*
  ============================================================================
  Name        : TP.c
- Author      : 
+ Author      : Julia Tamasi
  Version     :
  Copyright   : Your copyright notice
  Description : Hello World in C, Ansi-style
@@ -54,24 +54,23 @@ int main(void) {
 				 			}
 				 			else
 				 			{
-				 				printf("Intentelo nuevamente.\n\n");
+				 				printf("\nIntentelo nuevamente.\n\n");
 				 			}
 				 			break;
 				 	}
 				 	case 4:
 				 			if(employeeReport(arrayEmployees, QTY_EMPLOYEES)==0)
 				 			{
-				 				printf("\n\nFIN DEL REPORTE\n\n\n");
+				 				printf("\n-------------------------------FIN DEL REPORTE------------------------------------\n\n\n");
 				 			}
 				 			else
 				 			{
-				 				printf("\n ERROR\n-No se pudo realizar el reporte-\n\n");
+				 				printf("\n-No se pudo realizar el reporte-\n\n");
 				 			}
 				}
 			}
-
 		}while(chosenOption!=5);
 	}
-	printf("Goodbye!");
+	printf("¡Goodbye!");
 	return EXIT_SUCCESS;
 }
