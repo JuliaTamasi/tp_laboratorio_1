@@ -8,8 +8,8 @@
 #ifndef SRC_VALIDATIONS_H_
 #define SRC_VALIDATIONS_H_
 
-int val_isValidNumber(char* number, int len);
-int val_isValidString(char string[], int len);
-int val_isValidFloat(char array[], int len);
+int val_isValidNumber(char* number);
+int val_isValidString(char* string, int len);
+int val_isValidFloat(char* number);
 
 #endif /* SRC_VALIDATIONS_H_ */

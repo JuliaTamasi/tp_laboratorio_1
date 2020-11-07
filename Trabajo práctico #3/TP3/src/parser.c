@@ -20,17 +20,14 @@ int parser_EmployeeFromText(FILE* pFile , LinkedList* pArrayListEmployee)
 
 	if(pFile!=NULL && pArrayListEmployee!=NULL)
 	{
-		printf("Entre al primer if");
 		ll_clear(pArrayListEmployee);
 		do
 		{
 			if(fscanf(pFile,"%[^,],%[^,],%[^,],%[^\n]\n",bufferId,bufferName,bufferWorkedHours,bufferSalary)==4)
 			{
-				printf("Levante los datos");
 				pEmployee = employee_newParametros(bufferId, bufferName, bufferWorkedHours,bufferSalary);
 				if(pEmployee!=NULL)
 				{
-					printf("Aca no entra ni en pedo");
 					ll_add(pArrayListEmployee, pEmployee);
 					result = 0;
 				}
@@ -39,16 +36,14 @@ int parser_EmployeeFromText(FILE* pFile , LinkedList* pArrayListEmployee)
 			{
 				employee_delete(pEmployee);
 			}
-		}while(feof(pFile)==0);
+		}while(!feof(pFile));
 	}
     return result;
 }
-
-/** \brief Parsea los datos los datos de los empleados desde el archivo data.csv (modo binario).
- *
- * \param path char*
- * \param pArrayListEmployee LinkedList*
- * \return int
+/** \brief Parse employee data from file databin.bin (binary mode)
+ * \param FILE* pFile, Pointer to file to load
+ * \param LinkedList* pArrayListEmployee, Pointer to LinkedList
+ * \return [0] if OK / [-1] if error
  *
  */
 int parser_EmployeeFromBinary(FILE* pFile , LinkedList* pArrayListEmployee)
@@ -60,6 +55,7 @@ int parser_EmployeeFromBinary(FILE* pFile , LinkedList* pArrayListEmployee)
 	Employee* pBuffer;
 	if(pFile!=NULL && pArrayListEmployee!=NULL)
 	{
+		ll_clear(pArrayListEmployee);
 		do
 		{
 			pBuffer = employee_new(); //creo el empleado de manera dinamica

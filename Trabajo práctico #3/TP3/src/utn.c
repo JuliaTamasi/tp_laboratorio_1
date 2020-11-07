@@ -208,7 +208,7 @@ int utn_getMenu(int *number, int retries, int max, int min)
 					"[4] Modificar datos de empleado\n"
 					"[5] Baja de empleado\n"
 					"[6] Listar empleados\n"
-					"[7] Ordenar empleados\n"
+					"[7] Ordenar empleados por orden alfabetico (nombre)\n"
 					"[8] Guardar los datos de los empleados en el archivo data.csv (modo texto).\n"
 					"[9] Guardar los datos de los empleados en 'data.bin' (modo binario)\n"
 					"[10] SALIR \n");

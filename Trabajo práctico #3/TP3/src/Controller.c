@@ -8,12 +8,10 @@
 #include "utn.h"
 
 
-/** \brief Carga los datos de los empleados desde el archivo data.csv (modo texto).
- *
- * \param path char*
- * \param pArrayListEmployee LinkedList*
- * \return int
- *
+/** \brief Loads employee data from data.csv file (text mode).
+ * \param char* path, file path
+ * \param LinkedList* pArrayListEmployee, pointer to LinkedList
+ * \return [-1] if ERROR or [0] if OK
  */
 int controller_loadFromText(char* path , LinkedList* pArrayListEmployee)
 {
@@ -36,12 +34,10 @@ int controller_loadFromText(char* path , LinkedList* pArrayListEmployee)
 	return result;
 }
 
-/** \brief Carga los datos de los empleados desde el archivo data.csv (modo binario).
- *
- * \param path char*
- * \param pArrayListEmployee LinkedList*
- * \return int
- *
+/** \brief Loads employee data from databin.bin file (binary mode).
+ * \param char* path, file path
+ * \param LinkedList* pArrayListEmployee, pointer to LinkedList
+ * \return [-1] if ERROR or [0] if OK
  */
 int controller_loadFromBinary(char* path , LinkedList* pArrayListEmployee)
 {
@@ -64,12 +60,9 @@ int controller_loadFromBinary(char* path , LinkedList* pArrayListEmployee)
 }
 //}
 
-/** \brief Alta de empleados
- *
- * \param path char*
- * \param pArrayListEmployee LinkedList*
- * \return int
- *
+/** \brief To register a new employee
+ * \param LinkedList* pArrayListEmployee, pointer to LinkedList
+ * \return [-1] if ERROR or [0] if OK
  */
 int controller_addEmployee(LinkedList* pArrayListEmployee)
 {
@@ -98,36 +91,103 @@ int controller_addEmployee(LinkedList* pArrayListEmployee)
     return result;
 }
 
-/** \brief Modificar datos de empleado
- *
- * \param path char*
- * \param pArrayListEmployee LinkedList*
- * \return int
- *
+/** \brief Modify the data of an existing employee
+ * \param LinkedList* pArrayListEmployee, pointer to LinkedList
+ * \return [-1] if ERROR or [0] if OK
  */
+
 int controller_editEmployee(LinkedList* pArrayListEmployee)
 {
-    return 1;
+	int result = -1;
+	int id;
+	int bufferIndex;
+	int option;
+	char bufferName[NAME_LEN];
+	int bufferHours;
+	float bufferSalary;
+	Employee* bufferEmp;
+	if(pArrayListEmployee!=NULL)
+	{
+		if( !utn_getNumber("\n[Ingrese el id del empleado a modificar]\n", &id, 3, 99999, 1) &&
+			!controller_findEmployeeById(pArrayListEmployee, id, &bufferIndex) && bufferIndex>-1)
+		{
+			employee_printHeader();
+			bufferEmp = ll_get(pArrayListEmployee, bufferIndex);
+			employee_printByIndex(pArrayListEmployee, bufferIndex);
+			if(!utn_getNumber( "\n\n[Ingrese el campo que desea modificar]\n[1] Nombre\n[2] Horas trabajadas\n[3] Sueldo\n[4] Volver al menú\n", &option, 3, 4, 1))
+			{
+				switch(option)
+				{
+					case 1:
+						if( !utn_getName("[Ingrese el nombre del empleado]\n", "[ERROR. Ingrese un nombre valido]\n", bufferName, 3, NAME_LEN) &&
+							!employee_setNombre(bufferEmp, bufferName))
+						{
+							result=0;
+						}
+						break;
+					case 2:
+						if( !utn_getNumber("\n[Ingrese la cantidad de horas trabajadas]\n",&bufferHours, 3, 9999, 1) &&
+							!employee_setHorasTrabajadas(bufferEmp, bufferHours))
+						{
+							result=0;
+						}
+						break;
+					case 3:
+						if( !utn_getNumberFloat("[Ingrese el sueldo del empleado]\n", &bufferSalary, 3, 9999, 1) &&
+							!employee_setSueldo(bufferEmp, bufferSalary))
+						{
+							result=0;
+						}
+						break;
+				}
+			}
+		}
+		else
+		{
+			printf("\n[ERROR. No se pudo encontrar el ID]\n");
+		}
+	}
+	return result;
 }
 
-/** \brief Baja de empleado
- *
- * \param path char*
- * \param pArrayListEmployee LinkedList*
- * \return int
- *
+/** \brief Removes an employee from the list and frees the memory area used by him
+ * \param LinkedList* pArrayListEmployee, pointer to LinkedList
+ * \return [-1] if ERROR or [0] if OK
  */
 int controller_removeEmployee(LinkedList* pArrayListEmployee)
 {
-    return 1;
+	int result = -1;
+	int bufferIndex;
+	int bufferId;
+	Employee* pEmployee;
+	int chosenOption;
+
+	if (pArrayListEmployee != NULL)
+	{
+		if (!utn_getNumber("\nIngrese el id del empleado que quiere eliminar:\n",&bufferId, 2, INT_MAX, 1) &&
+			!controller_findEmployeeById(pArrayListEmployee, bufferId,&bufferIndex) &&
+			 bufferIndex>0)
+		{
+			pEmployee = (Employee*)ll_get(pArrayListEmployee, bufferIndex);
+			if ( pEmployee != NULL && !employee_printByIndex(pArrayListEmployee, bufferIndex) && !utn_getNumber("¿Desea confirmar la eliminacion?\n[1] Si\n[2] No\n", &chosenOption, 3, 2, 1) &&
+				 chosenOption==1)
+			{
+				employee_delete(pEmployee);
+				ll_remove(pArrayListEmployee,bufferIndex);
+				result = 0;
+			}
+			else
+			{
+				printf("[Volviendo al menu...]\n");
+			}
+		}
+	}
+    return result;
 }
 
-/** \brief Listar empleados
- *
- * \param path char*
- * \param pArrayListEmployee LinkedList*
- * \return int
- *
+/** \brief Prints the employee list data
+ * \param LinkedList* pArrayListEmployee, pointer to LinkedList
+ * \return [-1] if ERROR or [0] if OK
  */
 int controller_ListEmployee(LinkedList* pArrayListEmployee)
 {
@@ -158,17 +218,13 @@ int controller_sortEmployee(LinkedList* pArrayListEmployee)
 {
 	int result = -1;
 	int chosenOption;
-	if(pArrayListEmployee!=NULL && !ll_isEmpty(pArrayListEmployee))
+	if(pArrayListEmployee!=NULL)
 	{
 		if(!utn_getNumber("¿Como desea ordenar la lista?\n[0] Descendente\n[1] Ascendente\n", &chosenOption, 3, 1, 0))
 		{
 			ll_sort(pArrayListEmployee, employee_compararPorNombre, chosenOption); //preguntarle al usuario por que criterio quiere ordenar
 			result = 0;
 		}
-	}
-	else
-	{
-		printf("[ERROR. No se puede ordenar una lista vacia]\n");
 	}
     return result;
 }
@@ -180,8 +236,8 @@ int controller_sortEmployee(LinkedList* pArrayListEmployee)
  */
 int controller_saveAsText(char* path , LinkedList* pArrayListEmployee)
 {
-	int result=-1;
-	int len = ll_len(pArrayListEmployee);
+	int result = -1;
+	int len;
 	char bufferName[NAME_LEN];
 	int bufferId;
 	int bufferWorkedHours;
@@ -191,14 +247,16 @@ int controller_saveAsText(char* path , LinkedList* pArrayListEmployee)
 	if(path!=NULL && pArrayListEmployee!=NULL)
 	{
 		pFile = fopen(path, "w");
+		len = ll_len(pArrayListEmployee);
 		if(pFile!=NULL)
 		{
 			ll_sort(pArrayListEmployee, employee_compararPorId, 1);
 			fprintf(pFile, "id,nombre,horasTrabajadas,sueldo\n");
 			for(int i=0;i<len;i++)
 			{
-				pEmployee = ll_get(pArrayListEmployee, i);
-				if( !employee_getId(pEmployee, &bufferId) &&
+				pEmployee = (Employee*)ll_get(pArrayListEmployee, i);
+				if( pEmployee!=NULL &&
+					!employee_getId(pEmployee, &bufferId) &&
 					!employee_getNombre(pEmployee, bufferName) &&
 					!employee_getHorasTrabajadas(pEmployee, &bufferWorkedHours) &&
 					!employee_getSueldo(pEmployee, &bufferSalary))
@@ -213,22 +271,21 @@ int controller_saveAsText(char* path , LinkedList* pArrayListEmployee)
 	return result;
 }
 
-/** \brief Save employee data in the file data.bin (binary mode)
+/** \brief Save employee data in the file databin.bin (binary mode)
  * \param char* path, File path
  * \param LinkedList* pArrayListEmployee, Pointer to LinkedList
  * \return (-1) if ERROR (0) if OK
  */
 int controller_saveAsBinary(char* path , LinkedList* pArrayListEmployee)
 {
-	//recorro la lista y solamente escribo en el archivo. La interaccion importante es con la lista
-	//hacer una funcion que valide el path, que se fije si existe
 	int result = -1;
 	FILE* pFile;
-	int len = ll_len(pArrayListEmployee); //me fijo cuanto mide la lista de punteros
+	int len;
 	Employee* pAuxEmployee;
 	if(path!=NULL && pArrayListEmployee!=NULL)
 	{
-		pFile = fopen(path,"wb"); //destruye el archivo original y se crea uno nuevo
+		len = ll_len(pArrayListEmployee);
+		pFile = fopen(path,"wb");
 		if(pFile!=NULL)
 		{
 			ll_sort(pArrayListEmployee,employee_compararPorId,1);
@@ -243,9 +300,9 @@ int controller_saveAsBinary(char* path , LinkedList* pArrayListEmployee)
 	}
     return result;
 }
-/** \brief Busca en la lista de empleados el maximo id y retorna ese valor + 1
- * \param pArrayListEmployee LinkedList*: Puntero a la LinkedList
- * \return el valor del maximo id encontrado + 1 o (-1) si algo salio mal
+/** \brief Finds the existing maximum ID in the employee list
+ * \param LinkedList* pArrayListEmployee, Pointer to LinkedList
+ * \return the value of the maximum ID found + 1 or [-1] if ERROR
  */
 int controller_findMaxId (LinkedList* pArraylistEmployee)
 {
@@ -270,13 +327,11 @@ int controller_findMaxId (LinkedList* pArraylistEmployee)
 	}
 	return result;
 }
-/** \brief Buscar empleado por ID
- *
- * \param pArrayListEmployee LinkedList*: Puntero a la LinkedList
- * \param int id: Recibimos el ID a buscar
- * \param int* index: Devolvemos por referencia el indice del empleado encontrado
- * \return (-1) Si algo salio mal o (0) si todo esta bien
- *
+/** \brief Search for an employee by ID
+ * \param LinkedList* pArrayListEmployee, Pointer to LinkedList
+ * \param int id, "ID" to be searched
+ * \param int* index, pointer to the memory space where the index corresponding to the employee's "ID" will be saved
+ * \return [-1] if ERROR or [0] if OK
  */
 int controller_findEmployeeById(LinkedList* pArrayListEmployee, int id, int* index)
 {
